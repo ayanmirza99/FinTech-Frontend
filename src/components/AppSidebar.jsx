@@ -33,19 +33,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "@/redux/features/auth/slice";
-
-const menuItems = [
-  { title: "Dashboard", icon: LayoutDashboard, path: "/" },
-  { title: "API Catalog", icon: GitGraph, path: "/api-catalog" },
-  {
-    title: "Transaction Simulator",
-    icon: BarChart3,
-    path: "/transaction-simulator",
-  },
-  { title: "API Keys", icon: Key, path: "/api-keys" },
-  { title: "Analytics", icon: BarChart3, path: "/analytics" },
-  { title: "Documentation", icon: FileText, path: "/documentation" },
-];
+import { devMenu } from "@/config/navConfig";
 
 export function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
@@ -74,7 +62,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="flex mt-10 p-2 flex-col space-y-6">
-              {menuItems.map((item) => (
+              {devMenu.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     className="py-6"

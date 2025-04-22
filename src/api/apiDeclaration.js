@@ -9,3 +9,6 @@ export const AUTH_ME = () => {
 export const SIGN_IN = async (body) => {
   return apiService("users/login", "POST", body);
 };
+export const SUBSCRIBE = async (body) => {
+  return apiService("users/subscription", "POST", body);
+};

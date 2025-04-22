@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import { AppSidebar } from "@/components/AppSidebar";
-import BalancePanel from "./panels/BalancePanel";
-import TransferPanel from "./panels/TransferPanel";
-import TransactionsPanel from "./panels/TransactionsPanel";
+// import BalancePanel from "./panels/BalancePanel";
+// import TransferPanel from "./panels/TransferPanel";
+// import TransactionsPanel from "./panels/TransactionsPanel";
 // import InvoicePanel from "./panels/InvoicePanel";
 // import { SidebarProvider } from "@/components/ui/sidebar";
 // import { useSubscription } from "@/contexts/SubscriptionContext";
@@ -13,7 +12,6 @@ import TransactionsPanel from "./panels/TransactionsPanel";
 const Dashboard = () => {
   const navigate = useNavigate();
   // const { currentPlan } = useSubscription();
-  const [activeTab, setActiveTab] = useState("balance");
 
   useEffect(() => {
     document.title = "Dashboard | FinConnect";
@@ -50,7 +48,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <Tabs
+        {/* <Tabs
           defaultValue="balance"
           value={activeTab}
           onValueChange={setActiveTab}
@@ -75,9 +73,8 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="invoice" className="animate-fade-in">
-            {/* <InvoicePanel /> */}
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
       </div>
     </div>
     //   </div>

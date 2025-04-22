@@ -8,22 +8,43 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { pricingPlans } from "@/constants";
 import { useModal } from "@/hooks/useModal";
+import { useSelector } from "react-redux";
+import { SUBSCRIBE } from "@/api/apiDeclaration";
+import toast from "react-hot-toast";
 
 export function PricingPlans() {
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const { setDialogData, handleModalClose } = useModal();
-  //   const [billingPeriod, setBillingPeriod] = useState("MONTHLY");
-  const showConfirmModal = () => {
+  const showConfirmModal = (name, price) => {
     setDialogData({
-      title: "Delete Item",
-      description: "Are you sure you want to delete this?",
+      title: "Subscribe",
+      description: `Are you sure you want to subscribe to the ${name} plan for $${price}?`,
       showModal: true,
-      onConfirm: () => {
-        console.log("Confirmed!");
+      onConfirm: async () => {
+        const currentDate = new Date();
+        const currentPeriodEnd =
+          name === "Hobby"
+            ? new Date(currentDate.setMonth(currentDate.getMonth() + 1))
+            : new Date(currentDate.setFullYear(currentDate.getFullYear() + 1));
+
+        const formattedPeriodEnd = currentPeriodEnd.toISOString().split("T")[0];
+        let body = {
+          userId: user?._id,
+          packageName: name === "Hobby" ? "monthly" : "yearly",
+          currentPeriodEnd: formattedPeriodEnd,
+        };
+        try {
+          await SUBSCRIBE(body);
+          toast.success("Subscription successful!");
+          navigate("/");
+        } catch (error) {
+          console.log(error);
+          toast.error("Subscription failed!");
+        }
         handleModalClose();
       },
     });
@@ -105,15 +126,13 @@ export function PricingPlans() {
                 </ul>
               </CardContent>
               <div className="p-6 mt-auto">
-                <Link to={user ? "/dashboard/billing" : "/sign-in"}>
-                  <Button
-                    className="w-full"
-                    onClick={showConfirmModal}
-                    variant={plan.name === "Standard" ? "default" : "outline"}
-                  >
-                    Upgrade
-                  </Button>
-                </Link>
+                <Button
+                  className="w-full"
+                  onClick={() => showConfirmModal(plan.name, plan.price)}
+                  variant={plan.name === "Standard" ? "default" : "outline"}
+                >
+                  Subscribe
+                </Button>
               </div>
             </Card>
           ))}
