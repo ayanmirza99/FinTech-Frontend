@@ -1,33 +1,38 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signupSchema } from "@/config/yup";
+import { loginSchema } from "@/config/yup";
 import CustomTextField from "../textField";
 import { Form } from "../ui/form";
 import { Facebook, Github } from "lucide-react";
-import CustomSelectField from "../selectField";
-import { USER_ROLES } from "@/constants";
-import { SIGN_UP } from "@/api/apiDeclaration";
+import { SIGN_IN } from "@/api/apiDeclaration";
 import toast from "react-hot-toast";
+import { constants } from "@/constants";
+import { storeData } from "@/helper/storageHelper";
+import { useDispatch } from "react-redux";
+import { setToken } from "@/redux/features/auth/slice";
 
-export default function SignUpForm() {
+export default function LoginForm() {
+  const dispatch = useDispatch();
   const form = useForm({
-    resolver: yupResolver(signupSchema),
+    resolver: yupResolver(loginSchema),
   });
-  const onSubmit = async (body) => {
+  const onSubmit = async (data) => {
     try {
-      let resp = await SIGN_UP(body);
-      toast.success(resp.message);
-      form.reset();
+      const response = await SIGN_IN(data);
+      storeData(constants.authToken, response.data.accessToken);
+      dispatch(setToken(response.data.accessToken));
+      toast.success(response.message);
     } catch (error) {
-      toast.error(error.message);
+      console.log(error);
+      toast.error("User does not exists");
     }
   };
 
   return (
     <div className="my-6 w-full max-w-xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
       <h2 className="text-3xl text-center font-bold text-black/70 dark:text-neutral-200">
-        Sign Up to
+        Login to
         <br />{" "}
         <span className="font-custom  text-primary/90 font-light">
           FinConnect
@@ -45,35 +50,8 @@ export default function SignUpForm() {
             />
             <CustomTextField
               control={form.control}
-              name="username"
-              label={"Username"}
-              type="text"
-              placeholder="tonyStark"
-            />
-            <CustomTextField
-              control={form.control}
-              name="fullName"
-              label={"Full Name"}
-              type="text"
-              placeholder="Ayan Mirza"
-            />
-            <CustomSelectField
-              optionsArray={USER_ROLES}
-              control={form.control}
-              name="role"
-              label={"Role"}
-            />
-            <CustomTextField
-              control={form.control}
               name="password"
               label={"Password"}
-              type="password"
-              placeholder="*******"
-            />
-            <CustomTextField
-              control={form.control}
-              name="confirmPassword"
-              label={"Confirm Password"}
               type="password"
               placeholder="*******"
             />
@@ -83,7 +61,7 @@ export default function SignUpForm() {
             className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-primary to-primary/60 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
             type="submit"
           >
-            Sign up &rarr;
+            Sign in &rarr;
             <BottomGradient />
           </button>
 

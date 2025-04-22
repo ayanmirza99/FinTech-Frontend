@@ -30,8 +30,15 @@ const commonScheme = {
 };
 
 export const signupSchema = yup.object().shape({
-  name: commonScheme.name,
+  fullName: commonScheme.name,
   email: commonScheme.email,
+  username: commonScheme.required,
+  role: commonScheme.required,
   password: commonScheme.password,
   confirmPassword: commonScheme.passwordConfirmation,
+});
+
+export const loginSchema = yup.object().shape({
+  email: commonScheme.email,
+  password: commonScheme.password,
 });
