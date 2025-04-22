@@ -93,7 +93,7 @@ export function Navbar() {
             ) : ( */}
             <>
               <Button
-                onClick={() => navigate("/sign-in")}
+                onClick={() => navigate("/login")}
                 variant="ghost"
                 className="hidden md:flex"
               >

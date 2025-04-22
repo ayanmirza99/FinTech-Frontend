@@ -1,5 +1,9 @@
 export const constants = {
   authToken: "token",
+  ADMIN: "ADMIN",
+  DEVELOPER: "DEVELOPER",
+  ACTIVE: "active",
+  IN_ACTIVE: "inactive",
 };
 
 export const USER_ROLES = [

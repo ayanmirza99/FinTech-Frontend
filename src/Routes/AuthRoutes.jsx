@@ -13,7 +13,6 @@ export default function AuthRouter() {
         <Route path="*" element={<Navigate to={`/`} replace />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/pricing-plan" element={<PricingPlans />} />
       </Route>
     </Routes>
   );

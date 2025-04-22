@@ -10,6 +10,7 @@ function App() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth.status.user);
   const { user, token } = useSelector((state) => state.auth);
+  console.log(user);
 
   useEffect(() => {
     dispatch(getLoggedInUser());
