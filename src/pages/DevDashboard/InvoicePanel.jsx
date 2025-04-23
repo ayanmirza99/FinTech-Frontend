@@ -19,10 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { getInvoice } from "@/services/api";
-// import { getInvoice } from "@/services/api";
-// import { useToast } from "@/hooks/use-toast";
-// import { InvoiceSummary } from "@/types";
+import { GET_INVOICE_DATA } from "@/api/apiDeclaration";
+import toast from "react-hot-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const invoiceSchema = yup.object({
   startDate: yup.string().min(1, "Start date is required"),
@@ -45,28 +44,12 @@ const InvoicePanel = () => {
   const onSubmit = async (values) => {
     setIsLoading(true);
     try {
-      const response = await getInvoice(values.startDate, values.endDate);
-
-      if (response.error) {
-        // toast({
-        //   variant: "destructive",
-        //   title: "Invoice Generation Failed",
-        //   description: response.error,
-        // });
-      } else if (response.data) {
-        setInvoiceData(response.data);
-        // toast({
-        //   title: "Invoice Generated",
-        //   description: "Your invoice has been generated successfully",
-        // });
-      }
+      const response = await GET_INVOICE_DATA(values.startDate, values.endDate);
+      setInvoiceData(response.data);
+      toast.success(response.message);
     } catch (err) {
       console.log(err);
-      // toast({
-      //   variant: "destructive",
-      //   title: "Invoice Generation Failed",
-      //   description: "An unexpected error occurred",
-      // });
+      toast.error(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -162,8 +145,8 @@ const InvoicePanel = () => {
                       <div>
                         <p className="text-sm text-gray-500">Period</p>
                         <p className="font-medium">
-                          {formatDate(invoiceData.startDate)} -{" "}
-                          {formatDate(invoiceData.endDate)}
+                          {formatDate(form.getValues().startDate)} -{" "}
+                          {formatDate(form.getValues().endDate)}
                         </p>
                       </div>
                       <div>
@@ -179,9 +162,7 @@ const InvoicePanel = () => {
                         <p className="text-sm text-gray-500">
                           Transaction Count
                         </p>
-                        <p className="font-medium">
-                          {invoiceData.transactionCount}
-                        </p>
+                        <p className="font-medium">{invoiceData.count}</p>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Total Amount</p>
@@ -204,11 +185,10 @@ const InvoicePanel = () => {
                         onClick={() =>
                           window.open(invoiceData.downloadUrl, "_blank")
                         }
-                        className="bg-fintech-blue hover:bg-fintech-blue/90"
+                        className="bg-primary hover:bg-primary/90"
                       >
                         Download PDF
                       </Button>
-                      <Button variant="outline">Print Invoice</Button>
                     </div>
                   </div>
                 </div>

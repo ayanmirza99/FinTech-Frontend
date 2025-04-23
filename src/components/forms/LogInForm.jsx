@@ -25,7 +25,7 @@ export default function LoginForm() {
       toast.success(response.message);
     } catch (error) {
       console.log(error);
-      toast.error("User does not exists");
+      toast.error(error.message);
     }
   };
 

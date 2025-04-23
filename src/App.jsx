@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getLoggedInUser } from "./redux/features/auth/actions";
 import HomeRouter from "./Routes/HomeRoutes";
+import CustomSpinner from "./components/CustomSpinner";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,8 +21,7 @@ function App() {
     <BrowserRouter>
       {loading ? (
         <div className="w-full h-screen">
-          Loading
-          {/* <CustomSpinner /> */}
+          <CustomSpinner />
         </div>
       ) : user?.email ? (
         <HomeRouter />

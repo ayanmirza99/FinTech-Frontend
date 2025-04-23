@@ -33,7 +33,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "@/redux/features/auth/slice";
-import { devMenu } from "@/config/navConfig";
+import { adminMenu, devMenu } from "@/config/navConfig";
+import { constants, USER_ROLES } from "@/constants";
 
 export function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
@@ -62,19 +63,33 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="flex mt-10 p-2 flex-col space-y-6">
-              {devMenu.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    className="py-6"
-                    isActive={location === item.path}
-                    onClick={() => navigate(item.path)}
-                    tooltip={item.title}
-                  >
-                    <item.icon className="w-8 h-8" />
-                    <span className="text-lg">{item.title}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {user?.role === constants.DEVELOPER
+                ? devMenu.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        className="py-6"
+                        isActive={location === item.path}
+                        onClick={() => navigate(item.path)}
+                        tooltip={item.title}
+                      >
+                        <item.icon className="w-8 h-8" />
+                        <span className="text-lg">{item.title}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))
+                : adminMenu.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        className="py-6"
+                        isActive={location === item.path}
+                        onClick={() => navigate(item.path)}
+                        tooltip={item.title}
+                      >
+                        <item.icon className="w-8 h-8" />
+                        <span className="text-lg">{item.title}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

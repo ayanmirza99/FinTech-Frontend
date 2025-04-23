@@ -1,10 +1,12 @@
 import {
   ArrowLeftRight,
   BarChart3,
+  Book,
   GitGraph,
   LayoutDashboard,
   RectangleEllipsis,
   ScrollText,
+  UsersRound,
   Wallet,
 } from "lucide-react";
 
@@ -26,4 +28,15 @@ export const devMenu = [
     icon: ScrollText,
     path: "/dev/invoice",
   },
+  {
+    title: "Documentation",
+    icon: Book,
+    path: "/dev/documentation",
+  },
+];
+
+export const adminMenu = [
+  { title: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
+  { title: "Users", icon: UsersRound, path: "/admin/users" },
+  { title: "API Logs", icon: BarChart3, path: "/admin/api-logs" },
 ];

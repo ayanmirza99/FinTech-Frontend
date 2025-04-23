@@ -7,9 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getBalance, getTestAccounts } from "@/services/api";
+import { getTestAccounts } from "@/services/api";
+import { GET_USER_BAlANCE } from "@/api/apiDeclaration";
+import { useSelector } from "react-redux";
 
 const BalancePanel = () => {
+  const { user } = useSelector((state) => state.auth);
   const [balance, setBalance] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +22,7 @@ const BalancePanel = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await getBalance();
+      const response = await GET_USER_BAlANCE(user?._id);
       if (response.error) {
         setError(response.error);
       } else if (response.data) {
@@ -47,6 +50,7 @@ const BalancePanel = () => {
   useEffect(() => {
     fetchBalance();
     fetchAccounts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formatDate = (dateString) => {
@@ -68,7 +72,8 @@ const BalancePanel = () => {
           <div>
             <h1 className="text-3xl font-bold">Balance Overview</h1>
             <p className="text-muted-foreground mt-1">
-              Stay updated with your financial status and manage your accounts effectively.
+              Stay updated with your financial status and manage your accounts
+              effectively.
             </p>
           </div>
         </div>
@@ -96,8 +101,8 @@ const BalancePanel = () => {
               ) : balance ? (
                 <div className="space-y-6">
                   <div className="text-center py-4">
-                    <h3 className="text-3xl font-bold text-fintech-blue">
-                      {formatCurrency(balance.balance)}
+                    <h3 className="text-4xl text-green-600 font-bold text-fintech-blue">
+                      {formatCurrency(balance.amount)}
                     </h3>
                     <p className="text-sm text-gray-500 mt-2">
                       Last updated: {formatDate(balance.lastUpdated)}

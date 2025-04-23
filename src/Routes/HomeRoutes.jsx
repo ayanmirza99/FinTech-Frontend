@@ -8,8 +8,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { constants } from "@/constants";
 import DashboardLayout from "@/Layouts/DashboardLayout";
+import LogsPanel from "@/pages/AdminDashboard/LogsPanel";
+import UsersPanel from "@/pages/AdminDashboard/UsersPanel";
 import BalancePanel from "@/pages/DevDashboard/BalancePanel";
 import Dashboard from "@/pages/DevDashboard/Dashboard";
+import Documentation from "@/pages/DevDashboard/Documentation";
 import InvoicePanel from "@/pages/DevDashboard/InvoicePanel";
 import TransactionsPanel from "@/pages/DevDashboard/TransactionsPanel";
 import TransferPanel from "@/pages/DevDashboard/TransferPanel";
@@ -29,9 +32,14 @@ export default function HomeRouter() {
     <Routes>
       {user?.role === constants.ADMIN ? (
         <Route element={<DashboardLayout />}>
-          <Route path={"/"} element={<Dashboard />} />
-          {/* <Route path={"/pricing"} element={<PricingPlans />} /> */}
-          <Route path="*" element={<Navigate to={`/`} replace />} />
+          <Route path={"/admin/dashboard"} element={<Dashboard />} />
+          <Route path={"/admin/users"} element={<UsersPanel />} />
+          <Route path={"/admin/api-logs"} element={<LogsPanel />} />
+          <Route path={"/pricing"} element={<PricingPlans />} />
+          <Route
+            path="*"
+            element={<Navigate to={`/admin/dashboard`} replace />}
+          />
         </Route>
       ) : user?.subscription?.status === constants.IN_ACTIVE ? (
         <>
@@ -132,6 +140,7 @@ export default function HomeRouter() {
           <Route path={"/dev/transfer"} element={<TransferPanel />} />
           <Route path={"/dev/transactions"} element={<TransactionsPanel />} />
           <Route path={"/dev/invoice"} element={<InvoicePanel />} />
+          <Route path={"/dev/documentation"} element={<Documentation />} />
           <Route path={"/pricing"} element={<PricingPlans />} />
           <Route
             path="*"

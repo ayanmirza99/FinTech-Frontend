@@ -40,7 +40,7 @@ export function PricingPlans() {
         try {
           await SUBSCRIBE(body);
           toast.success("Subscription successful!");
-          navigate("/");
+          navigate("/dev/dashboard");
         } catch (error) {
           console.log(error);
           toast.error("Subscription failed!");

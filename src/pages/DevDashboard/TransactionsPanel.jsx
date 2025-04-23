@@ -3,48 +3,36 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getTransactions } from "@/services/api";
-// import { getTransactions } from "@/services/api";
-// import { useToast } from "@/hooks/use-toast";
-// import { Transaction } from "@/types";
+import toast from "react-hot-toast";
+import { GET_TRANSACTIONS } from "@/api/apiDeclaration";
+import moment from "moment";
+import { useSelector } from "react-redux";
 
 const TransactionsPanel = () => {
+  const { user } = useSelector((state) => state.auth);
   const [transactions, setTransactions] = useState([]);
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const { toast } = useToast();
 
   const fetchTransactions = async (page = currentPage, size = pageSize) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await getTransactions({ page, pageSize: size });
-      if (response.error) {
-        setError(response.error);
-        // toast({
-        //   variant: "destructive",
-        //   title: "Error",
-        //   description: response.error,
-        // });
-      } else if (response.data) {
-        setTransactions(response.data.transactions);
-        setTotalTransactions(response.data.total);
-      }
+      const response = await GET_TRANSACTIONS(page, size);
+      setTransactions(response.data);
+      setTotalTransactions(response.data.length);
     } catch (err) {
       console.log(err);
       setError("Failed to fetch transactions");
-      // toast({
-      //   variant: "destructive",
-      //   title: "Error",
-      //   description: "Failed to fetch transactions",
-      // });
+      toast.error("Failed to fetch transactions");
     } finally {
       setIsLoading(false);
     }
@@ -52,13 +40,14 @@ const TransactionsPanel = () => {
 
   useEffect(() => {
     fetchTransactions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, pageSize]);
 
   const totalPages = Math.ceil(totalTransactions / pageSize);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
   };
 
   const formatCurrency = (amount) => {
@@ -67,12 +56,7 @@ const TransactionsPanel = () => {
       currency: "USD",
     }).format(amount);
   };
-
-  const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
+  console.log(transactions);
 
   return (
     <div className="flex-1 p-4 md:p-8">
@@ -112,7 +96,11 @@ const TransactionsPanel = () => {
               ) : error ? (
                 <div className="text-center py-8">
                   <p className="text-red-500 mb-4">{error}</p>
-                  <Button>Retry</Button>
+                  <Button
+                    onClick={() => fetchTransactions(currentPage, pageSize)}
+                  >
+                    Retry
+                  </Button>
                 </div>
               ) : transactions.length === 0 ? (
                 <div className="text-center py-8">
@@ -123,32 +111,31 @@ const TransactionsPanel = () => {
                 <div className="space-y-4">
                   {transactions.map((transaction) => (
                     <div
-                      key={transaction.id}
+                      key={transaction._id}
                       className="flex flex-col sm:flex-row justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center">
                           <span
                             className={`w-2 h-2 rounded-full mr-2 ${
-                              transaction.status === "completed"
-                                ? "bg-green-500"
-                                : transaction.status === "pending"
-                                ? "bg-yellow-500"
-                                : "bg-red-500"
+                              transaction.sender._id === user?._id
+                                ? "bg-red-500"
+                                : "bg-green-500"
                             }`}
                           ></span>
                           <h4 className="font-medium">
-                            {transaction.description}
+                            {transaction.sender._id === user?._id
+                              ? "Tranferred"
+                              : "Received"}
                           </h4>
                         </div>
                         <p className="text-sm text-gray-500">
-                          {formatDate(transaction.createdAt)} · ID:{" "}
-                          {transaction.id.substring(0, 8)}...
+                          {moment(transaction.createdAt).format("DD-MM-YYYY")} ·
+                          ID: {transaction._id}
                         </p>
                         <p className="text-xs text-gray-400">
-                          From: {transaction.sourceAccountId.substring(0, 8)}...
-                          To: {transaction.destinationAccountId.substring(0, 8)}
-                          ...
+                          From: {transaction.sender?._id} ... To:{" "}
+                          {transaction.receiver?._id}
                         </p>
                       </div>
                       <div className="text-right mt-2 sm:mt-0">
@@ -185,8 +172,8 @@ const TransactionsPanel = () => {
                   >
                     Previous
                   </Button>
-                  <div className="flex items-center px-2 text-sm">
-                    {currentPage} / {totalPages}
+                  <div className="flex items-center md:px-2 text-sm">
+                    {currentPage}/{totalPages}
                   </div>
                   <Button
                     variant="outline"
