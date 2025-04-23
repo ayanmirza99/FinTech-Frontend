@@ -1,12 +1,129 @@
-# React + Vite
+# 💻 FinConnect – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive dashboard built with React for the **Subscription-Gated Fintech API Portal**.  
+Users can register, log in, subscribe to a plan, and access mock financial APIs through a clean interface.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## Expanding the ESLint configuration
+- React
+- Axios
+- React Router
+- Tailwind CSS
+- JWT Authentication
+- Shadcn
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Setup Instructions (Frontend Only)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/ayanmirza99/FinTech-Frontend.git
+cd finconnect-frontend
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Create `.env` File
+
+In the root of your project, create a `.env` file and add your backend URL:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000
+```
+
+> 🔁 Replace the URL with your actual backend server address if hosted online or on a different port.
+
+---
+
+### 4. Start the Development Server
+
+```bash
+npm run dev
+```
+
+Frontend will run on:  
+**http://localhost:5173** (default Vite port)
+
+---
+
+## 📁 Folder Structure Overview
+
+src/
+├── api/                 # Axios instances & API wrapper logic
+├── assets/              # Static images or SVGs
+├── components/          # Reusable UI components and forms
+├── config/              # Configurations (e.g., axios config)
+├── context/             # Auth & subscription context providers
+├── hooks/               # Custom React hooks
+├── layouts/             # Page layouts (e.g., AuthLayout, DashboardLayout)
+├── pages/               # All route-specific pages
+│   ├── AdminDashboard/  # Protected routes for admin
+│   ├── DevDashboard/    # Protected routes for users
+├── routes/              # Public & protected route definitions
+├── styles/              # Global styles (Tailwind config)
+├── utils/               # Helper functions (e.g., JWT handling)
+├── App.jsx              # Main app component
+├── main.jsx             # Entry point
+
+
+---
+
+## 🔐 Available Routes
+
+| Route              | Description                   |
+|--------------------|-------------------------------|
+| `/register`        | Register a new developer      |
+| `/login`           | Login to your account         |
+| `/pricing`         | Select a subscription plan    |
+| `/dashboard/*`     | Protected APIs and dashboard  |
+
+---
+
+## 🧪 Test Users
+
+Use these accounts to test different features of the application:
+
+### 👨‍💻 Developer Accounts (for testing API usage)
+
+1. **Email:** ayan@gmail.com  
+   **Password:** admin123/?
+
+2. **Email:** messi@gmail.com  
+   **Password:** ye123456
+
+These developer users can:
+- Register and log in
+- Subscribe to a plan
+- Access APIs like balance check, transfer, transactions, and invoice
+
+---
+
+### 🛡️ Admin Account (for testing admin features)
+
+1. **Email:** ayanjawed.m@gmail.com 
+   **Password:** admin123456/?
+
+The admin user can:
+- View all users and their subscription statuses
+- Cancel subscriptions for any user
+- View API request logs
+- (Optionally) Create mock users via a dedicated admin-only endpoint
+
+
+---
+
+## 🧠 Notes
+
+- Ensure your **backend server is running** and matches the URL in `.env`.
+- You must **log in and subscribe** before accessing any `/dashboard/*` routes.
+- This project is part of the **WebKode Challenge 2025**.
+
+---
