@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { constants } from "@/constants";
 import UserSignupChart from "../AdminDashboard/SignUpChart";
 import SubscriptionPieChart from "../AdminDashboard/SubscriptionPieChart";
+import TransactionTrendChart from "./TransactionTrendChart";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
@@ -32,11 +33,13 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-        {user?.role === constants.ADMIN && (
+        {user?.role === constants.ADMIN ? (
           <div className="flex flex-col gap-6">
             <UserSignupChart />
             <SubscriptionPieChart />
           </div>
+        ) : (
+          <TransactionTrendChart />
         )}
       </div>
     </div>

@@ -22,6 +22,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { GET_INVOICE_DATA } from "@/api/apiDeclaration";
 import toast from "react-hot-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import TransactionReport from "@/components/PDF";
 
 const invoiceSchema = yup.object({
   startDate: yup.string().min(1, "Start date is required"),
@@ -54,7 +57,17 @@ const InvoicePanel = () => {
       setIsLoading(false);
     }
   };
-
+  const generatePdf = () => {
+    const input = document.getElementById("page");
+    input.style.display = "block";
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/jpeg", 1);
+      const pdf = new jsPDF("p", "mm", "a4");
+      pdf.addImage(imgData, "JPEG", 0, 0, 210, 297);
+      pdf.save(`Invoice.pdf`);
+    });
+    input.style.display = "none";
+  };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
@@ -176,20 +189,27 @@ const InvoicePanel = () => {
                       <AlertTitle>Ready for Download</AlertTitle>
                       <AlertDescription>
                         Your invoice summary is ready. You can download it as a
-                        PDF or view the details below.
+                        PDF.
                       </AlertDescription>
                     </Alert>
 
                     <div className="flex justify-start space-x-2">
                       <Button
-                        onClick={() =>
-                          window.open(invoiceData.downloadUrl, "_blank")
-                        }
+                        onClick={() => generatePdf()}
                         className="bg-primary hover:bg-primary/90"
                       >
                         Download PDF
                       </Button>
                     </div>
+                    {invoiceData.transactions.length > 0 && (
+                      <TransactionReport
+                        data={invoiceData.transactions}
+                        pageNumber={1}
+                        totalPages={1}
+                        date={new Date().toLocaleDateString()}
+                        totalAmount={invoiceData.totalAmount}
+                      />
+                    )}
                   </div>
                 </div>
               )}

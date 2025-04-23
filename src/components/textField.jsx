@@ -33,7 +33,9 @@ const CustomTextField = ({
             <FormControl>
               <div className="relative">
                 <Input
-                  type={type}
+                  type={
+                    isPassword ? (showPassword ? "text" : "password") : type
+                  }
                   placeholder={placeholder}
                   {...field}
                   disabled={disabled}

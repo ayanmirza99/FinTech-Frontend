@@ -53,6 +53,7 @@ export default function LoginForm() {
               name="password"
               label={"Password"}
               type="password"
+              isPassword={true}
               placeholder="*******"
             />
           </div>
