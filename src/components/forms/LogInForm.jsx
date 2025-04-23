@@ -11,6 +11,7 @@ import { constants } from "@/constants";
 import { storeData } from "@/helper/storageHelper";
 import { useDispatch } from "react-redux";
 import { setToken } from "@/redux/features/auth/slice";
+import { Link } from "react-router-dom";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -24,7 +25,6 @@ export default function LoginForm() {
       dispatch(setToken(response.data.accessToken));
       toast.success(response.message);
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
     }
   };
@@ -66,27 +66,18 @@ export default function LoginForm() {
           </button>
 
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-foreground to-transparent dark:via-neutral-700" />
-          <div className="flex flex-col space-y-4">
-            <button
-              className="group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
-              type="submit"
-            >
-              <Github className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-              <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                GitHub
-              </span>
-              <BottomGradient />
-            </button>
-            <button
-              className="group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
-              type="submit"
-            >
-              <Facebook className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-              <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                Google
-              </span>
-              <BottomGradient />
-            </button>
+          <div className="w-full flex justify-center items-center gap-2 my-4">
+            <span className="text-sm text-muted-foreground dark:text-neutral-500">
+              Don't have an account?{" "}
+            </span>
+            <span>
+              <Link
+                to={"/sign-up"}
+                className="text-sm text-primary/90 font-medium"
+              >
+                Sign up &rarr;
+              </Link>
+            </span>
           </div>
         </form>
       </Form>

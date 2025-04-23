@@ -141,7 +141,6 @@ export default function HomeRouter() {
           <Route path={"/dev/transactions"} element={<TransactionsPanel />} />
           <Route path={"/dev/invoice"} element={<InvoicePanel />} />
           <Route path={"/dev/documentation"} element={<Documentation />} />
-          <Route path={"/pricing"} element={<PricingPlans />} />
           <Route
             path="*"
             element={<Navigate to={`/dev/dashboard`} replace />}

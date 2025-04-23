@@ -11,13 +11,15 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { pricingPlans } from "@/constants";
 import { useModal } from "@/hooks/useModal";
-import { useSelector } from "react-redux";
-import { SUBSCRIBE } from "@/api/apiDeclaration";
+import { useDispatch, useSelector } from "react-redux";
+import { AUTH_ME, SUBSCRIBE } from "@/api/apiDeclaration";
 import toast from "react-hot-toast";
+import { getLoggedInUser } from "@/redux/features/auth/actions";
 
 export function PricingPlans() {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { setDialogData, handleModalClose } = useModal();
   const showConfirmModal = (name, price) => {
     setDialogData({
@@ -39,6 +41,7 @@ export function PricingPlans() {
         };
         try {
           await SUBSCRIBE(body);
+          dispatch(getLoggedInUser());
           toast.success("Subscription successful!");
           navigate("/dev/dashboard");
         } catch (error) {

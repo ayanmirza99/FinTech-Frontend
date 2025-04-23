@@ -22,6 +22,12 @@ export const GET_USERS = async (page, pageSize) => {
 export const GET_API_LOGS = async (page, pageSize) => {
   return apiService(`admin/logs?page=${page}&pageSize=${pageSize}`, "GET");
 };
+export const GET_RECENT_SIGNUPS = async () => {
+  return apiService(`admin/recentSignUps`, "GET");
+};
+export const GET_SUBSCRIPTION_DISTRIBUTION = async () => {
+  return apiService(`admin/subscription-distribution`, "GET");
+};
 
 ///////////  POST  //////////
 export const SIGN_UP = async (body) => {

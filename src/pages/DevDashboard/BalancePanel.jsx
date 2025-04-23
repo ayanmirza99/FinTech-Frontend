@@ -7,14 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getTestAccounts } from "@/services/api";
 import { GET_USER_BAlANCE } from "@/api/apiDeclaration";
 import { useSelector } from "react-redux";
 
 const BalancePanel = () => {
   const { user } = useSelector((state) => state.auth);
   const [balance, setBalance] = useState(null);
-  const [accounts, setAccounts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,20 +34,8 @@ const BalancePanel = () => {
     }
   };
 
-  const fetchAccounts = async () => {
-    try {
-      const response = await getTestAccounts();
-      if (response.data) {
-        setAccounts(response.data);
-      }
-    } catch (err) {
-      console.error("Failed to fetch test accounts:", err);
-    }
-  };
-
   useEffect(() => {
     fetchBalance();
-    fetchAccounts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,7 +112,7 @@ const BalancePanel = () => {
             </CardContent>
           </Card>
 
-          {accounts.length > 0 && (
+          {/* {accounts.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle>Test Accounts</CardTitle>
@@ -159,7 +145,7 @@ const BalancePanel = () => {
                 </div>
               </CardContent>
             </Card>
-          )}
+          )} */}
         </div>
       </div>
     </div>
