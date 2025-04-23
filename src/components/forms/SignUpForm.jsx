@@ -9,9 +9,10 @@ import CustomSelectField from "../selectField";
 import { USER_ROLES } from "@/constants";
 import { SIGN_UP } from "@/api/apiDeclaration";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUpForm() {
+  const navigate = useNavigate();
   const form = useForm({
     resolver: yupResolver(signupSchema),
   });
@@ -19,6 +20,7 @@ export default function SignUpForm() {
     try {
       let resp = await SIGN_UP(body);
       toast.success(resp.message);
+      navigate("/login");
       form.reset();
     } catch (error) {
       toast.error(error.message);
@@ -49,7 +51,7 @@ export default function SignUpForm() {
               name="username"
               label={"Username"}
               type="text"
-              placeholder="tonyStark"
+              placeholder="tonystark"
             />
             <CustomTextField
               control={form.control}
@@ -68,6 +70,7 @@ export default function SignUpForm() {
               control={form.control}
               name="password"
               label={"Password"}
+              isPassword={true}
               type="password"
               placeholder="*******"
             />
@@ -75,6 +78,7 @@ export default function SignUpForm() {
               control={form.control}
               name="confirmPassword"
               label={"Confirm Password"}
+              isPassword={true}
               type="password"
               placeholder="*******"
             />
@@ -94,8 +98,12 @@ export default function SignUpForm() {
               Already have an account?{" "}
             </span>
             <span>
-              <Link to={"/login"} className="text-sm text-primary/90 font-medium">Sign in &rarr;</Link>
-
+              <Link
+                to={"/login"}
+                className="text-sm text-primary/90 font-medium"
+              >
+                Sign in &rarr;
+              </Link>
             </span>
           </div>
         </form>

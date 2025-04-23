@@ -28,6 +28,9 @@ export const GET_RECENT_SIGNUPS = async () => {
 export const GET_SUBSCRIPTION_DISTRIBUTION = async () => {
   return apiService(`admin/subscription-distribution`, "GET");
 };
+export const GET_TRANSACTIONS_TREND = async () => {
+  return apiService(`users/getTransactionTrends`, "GET");
+};
 
 ///////////  POST  //////////
 export const SIGN_UP = async (body) => {
