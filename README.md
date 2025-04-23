@@ -28,7 +28,7 @@ cd finconnect-frontend
 ### 2. Install Dependencies
 
 ```bash
-npm install
+npm install --force
 ```
 
 ### 3. Create `.env` File
@@ -56,6 +56,7 @@ Frontend will run on:
 
 ## 📁 Folder Structure Overview
 
+```
 src/
 ├── api/                 # Axios instances & API wrapper logic
 ├── assets/              # Static images or SVGs
@@ -72,7 +73,7 @@ src/
 ├── utils/               # Helper functions (e.g., JWT handling)
 ├── App.jsx              # Main app component
 ├── main.jsx             # Entry point
-
+```
 
 ---
 
@@ -106,17 +107,16 @@ These developer users can:
 
 ---
 
-### 🛡️ Admin Account (for testing admin features)
+### 🛡️ Admin Account (for Testing Admin Features)
 
-1. **Email:** ayanjawed.m@gmail.com 
-   **Password:** admin123456/?
+1. **Email:** ayanjawed.m@gmail.com  
+   **Password:** admin123456/?  
 
-The admin user can:
-- View all users and their subscription statuses
-- Cancel subscriptions for any user
-- View API request logs
-- (Optionally) Create mock users via a dedicated admin-only endpoint
-
+The admin user can:  
+- View all users and their subscription statuses  
+- Cancel subscriptions for any user  
+- View API request logs  
+- (Optionally) Create mock users via a dedicated admin-only endpoint  
 
 ---
 
